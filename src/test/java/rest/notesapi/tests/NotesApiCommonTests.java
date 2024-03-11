@@ -30,7 +30,7 @@ public class NotesApiCommonTests {
 		logger.info(" ### Checking healthOfNotesApiService_returnsSuccessStatus ### ");
 		Response response = CommonResponse.checkHealthOfNotesApi();
 		response.then().log().body();
-		Assert.assertEquals(response.statusCode(), 200);
+		Assert.assertEquals(response.statusCode(), 400); // Intentionally done to break the tests
 		response.then().body("success", equalTo(false)); // Intentionally done to break the tests
 		response.then().body("status", equalTo(400)); // Intentionally done to break the tests
 		response.then().body("message", equalTo(SUCCESS_HEALTH_MESSAGE));
