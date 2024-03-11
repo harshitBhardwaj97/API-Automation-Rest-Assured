@@ -32,7 +32,7 @@ public class NotesApiCommonTests {
 		response.then().log().body();
 		Assert.assertEquals(response.statusCode(), 200);
 		response.then().body("success", equalTo(true));
-		response.then().body("status", equalTo(200));
+		response.then().body("status", equalTo(400)); // Intentionally done to break the tests
 		response.then().body("message", equalTo(SUCCESS_HEALTH_MESSAGE));
 		response.then().assertThat().body(matchesJsonSchemaInClasspath("notes-health-check.json"));
 		logger.info(" ============================================== ");
