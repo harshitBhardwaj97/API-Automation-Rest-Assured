@@ -16,7 +16,7 @@ import rest.notesapi.responses.common.CommonResponse;
 public class NotesApiCommonTests {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotesApiCommonTests.class);
-	private final String SUCCESS_HEALTH_MESSAGE = "Notes API is Running."; // Intentionally done to break the tests
+	private final String SUCCESS_HEALTH_MESSAGE = "Notes API is Running";
 
 	@BeforeTest
 	public void beforeNotesApiCommonTestsBlock() {
@@ -30,9 +30,9 @@ public class NotesApiCommonTests {
 		logger.info(" ### Checking healthOfNotesApiService_returnsSuccessStatus ### ");
 		Response response = CommonResponse.checkHealthOfNotesApi();
 		response.then().log().body();
-		Assert.assertEquals(response.statusCode(), 400); // Intentionally done to break the tests
-		response.then().body("success", equalTo(false)); // Intentionally done to break the tests
-		response.then().body("status", equalTo(400)); // Intentionally done to break the tests
+		Assert.assertEquals(response.statusCode(), 200);
+		response.then().body("success", equalTo(true));
+		response.then().body("status", equalTo(200));
 		response.then().body("message", equalTo(SUCCESS_HEALTH_MESSAGE));
 		response.then().assertThat().body(matchesJsonSchemaInClasspath("notes-health-check.json"));
 		logger.info(" ============================================== ");
