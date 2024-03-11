@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_and_test_framework:
-    runs-on: ubuntu-20.24
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
