@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.github.javafaker.Faker;
@@ -37,6 +38,14 @@ public class NotesApiUserTests {
 	private final String INVALID_ACCESS_TOKEN_MESSAGE = "Access token is not valid or has expired, you will need to login";
 	private final String SUCCESSFUL_LOGOUT_MESSAGE = "User has been successfully logged out";
 	private final String SUCCESSFUL_ACCOUNT_DELETE_MESSAGE = "Account successfully deleted";
+	private final String SUCCESSFUL_USER_PROFILE_MESSAGE = "Profile successful";
+
+	@BeforeTest
+	public void beforeNotesApiUserTestsBlock() {
+		logger.info(" ============================================== ");
+		logger.info(" ### Starting to run NotesApiUserTests ### ");
+		logger.info(" ============================================== ");
+	}
 
 	@Test
 	public void registeringValidUser_returnsSuccessStatus() {
@@ -51,7 +60,6 @@ public class NotesApiUserTests {
 		response.then().body("success", equalTo(true));
 		response.then().body("status", equalTo(201));
 		response.then().body("message", equalTo(VALID_USER_REGISTER_MESSAGE));
-
 		response.then().assertThat().body(matchesJsonSchemaInClasspath("register-valid-user.json"));
 
 		System.out.println("Valid User Payload Details -> " + validUserPayload);
@@ -73,6 +81,8 @@ public class NotesApiUserTests {
 		response.then().body("status", equalTo(400));
 		response.then().body("message", equalTo(INVALID_EMAIL_MESSAGE));
 
+		response.then().assertThat().body(matchesJsonSchemaInClasspath("register-user-invalid-email.json"));
+
 		System.out.println("Invalid Email User Payload Details -> " + userWithInvalidEmailPayload);
 		logger.info(" ============================================== ");
 	}
@@ -84,12 +94,15 @@ public class NotesApiUserTests {
 		Response response = userResponseAndInfo.getResponse();
 		response.then().log().body();
 
+		userWithInvalidPasswordPayload = userResponseAndInfo.getPayloadOrInfo();
+
 		Assert.assertEquals(response.statusCode(), 400);
 		response.then().body("success", equalTo(false));
 		response.then().body("status", equalTo(400));
 		response.then().body("message", equalTo(INVALID_PASSWORD_MESSAGE));
 
-		userWithInvalidPasswordPayload = userResponseAndInfo.getPayloadOrInfo();
+		response.then().assertThat().body(matchesJsonSchemaInClasspath("register-user-invalid-email.json"));
+
 		System.out.println("Invalid Password User Payload Details -> " + userWithInvalidPasswordPayload);
 		logger.info(" ============================================== ");
 	}
@@ -117,6 +130,26 @@ public class NotesApiUserTests {
 		userInfoAfterSuccessfulLogin = userResponseAndInfo.getPayloadOrInfo();
 
 		System.out.println("userInfoAfterSuccessfulLogin -> " + userInfoAfterSuccessfulLogin);
+		logger.info(" ============================================== ");
+	}
+
+	@Test(dependsOnMethods = "loggingUserWithValidCredentials_returnsSuccessStatusAndToken")
+	public void getUserProfile_returnsSuccessStatus() {
+		logger.info(" ### Checking getUserProfile_returnsSuccessStatus ### ");
+		String token = (String) userInfoAfterSuccessfulLogin.get("token");
+		String email = (String) validUserPayload.get("email");
+		String name = (String) validUserPayload.get("name");
+
+		Response response = UserResponse.getUserProfileWithToken(token);
+		response.then().log().body();
+
+		Assert.assertEquals(response.statusCode(), 200);
+		response.then().body("success", equalTo(true));
+		response.then().body("status", equalTo(200));
+		response.then().body("message", equalTo(SUCCESSFUL_USER_PROFILE_MESSAGE));
+		response.then().body("data.email", equalTo(email));
+		response.then().body("data.name", equalTo(name));
+		response.then().assertThat().body(matchesJsonSchemaInClasspath("get-userprofile.json"));
 		logger.info(" ============================================== ");
 	}
 
@@ -184,7 +217,9 @@ public class NotesApiUserTests {
 
 	@AfterTest
 	public void deleteUser() {
-		logger.info(" ### Inside Delete User After Test Block ### ");
+		logger.info(" ============================================== ");
+		logger.info(" ### NotesApiUserTests Executed ### ");
+		logger.info(" ============================================== ");
 		// User has been logged in successfully once
 		if (!Objects.isNull(validUserPayload)) {
 			String email = (String) validUserPayload.get("email");
@@ -194,8 +229,6 @@ public class NotesApiUserTests {
 			Response loginResponse = userResponseAndInfo.getResponse();
 
 			loginResponse.then().log().body();
-
-			System.out.println("Inside After Test Block");
 
 			userInfoAfterSuccessfulLogin = userResponseAndInfo.getPayloadOrInfo();
 
@@ -215,7 +248,6 @@ public class NotesApiUserTests {
 		}
 
 		else {
-
 			System.out.println("No user has been logged in, hence no user deletion is possible !");
 			logger.info(" ============================================== ");
 		}

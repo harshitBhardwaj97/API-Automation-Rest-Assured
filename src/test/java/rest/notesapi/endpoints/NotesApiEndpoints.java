@@ -16,4 +16,10 @@ public class NotesApiEndpoints {
 	public static String deleteUser = BASE_URL + "/users/delete-account";
 	public static String changeUserPassword = BASE_URL + "/users/change-password";
 
+	/*
+	 * Notes End-points
+	 */
+	public static String getAllNotesOrPostNote = BASE_URL + "/notes";
+	public static String createReadUpdateOrDeleteNoteById = BASE_URL + "/notes/{id}";
+
 }

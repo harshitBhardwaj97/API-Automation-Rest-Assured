@@ -84,6 +84,11 @@ public class UserResponse {
 		return response;
 	}
 
+	public static Response getUserProfileWithToken(String token) {
+		Response response = given().header("x-auth-token", token).when().get(NotesApiEndpoints.userProfile);
+		return response;
+	}
+
 	public static Response deleteUserWithToken(String token) {
 		Response response = given().header("x-auth-token", token).when().delete(NotesApiEndpoints.deleteUser);
 		return response;

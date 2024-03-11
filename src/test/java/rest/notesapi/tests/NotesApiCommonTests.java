@@ -6,6 +6,8 @@ import static org.hamcrest.Matchers.equalTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import io.restassured.response.Response;
@@ -15,6 +17,13 @@ public class NotesApiCommonTests {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotesApiCommonTests.class);
 	private final String SUCCESS_HEALTH_MESSAGE = "Notes API is Running";
+
+	@BeforeTest
+	public void beforeNotesApiCommonTestsBlock() {
+		logger.info(" ============================================== ");
+		logger.info(" ### Starting to run NotesApiCommonTests ### ");
+		logger.info(" ============================================== ");
+	}
 
 	@Test
 	public void healthOfNotesApiService_returnsSuccessStatus() {
@@ -29,4 +38,10 @@ public class NotesApiCommonTests {
 		logger.info(" ============================================== ");
 	}
 
+	@AfterTest
+	public void afterNotesApiCommonTestsBlock() {
+		logger.info(" ============================================== ");
+		logger.info(" ### NotesApiCommonTests Executed ### ");
+		logger.info(" ============================================== ");
+	}
 }

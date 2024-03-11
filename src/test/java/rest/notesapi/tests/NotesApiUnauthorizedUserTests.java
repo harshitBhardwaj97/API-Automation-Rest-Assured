@@ -6,6 +6,8 @@ import static org.hamcrest.Matchers.equalTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import io.restassured.response.Response;
@@ -15,6 +17,13 @@ public class NotesApiUnauthorizedUserTests {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotesApiUnauthorizedUserTests.class);
 	private final String AUTH_MISSING_MESSAGE = "No authentication token specified in x-auth-token header";
+
+	@BeforeTest
+	public void beforeNotesApiUnauthorizedUserTestsBlock() {
+		logger.info(" ============================================== ");
+		logger.info(" ### Starting to run NotesApiUnauthorizedUserTests ### ");
+		logger.info(" ============================================== ");
+	}
 
 	@Test
 	public void getUserProfile_withoutAuthorization_returnsUnauthorizedRequestStatus() {
@@ -77,6 +86,13 @@ public class NotesApiUnauthorizedUserTests {
 		response.then().body("status", equalTo(401));
 		response.then().body("message", equalTo(AUTH_MISSING_MESSAGE));
 		Assert.assertEquals(response.statusCode(), 401);
+		logger.info(" ============================================== ");
+	}
+
+	@AfterTest
+	public void afterNotesApiUnauthorizedUserBlock() {
+		logger.info(" ============================================== ");
+		logger.info(" ### NotesApiUnauthorizedUserTests Executed ### ");
 		logger.info(" ============================================== ");
 	}
 

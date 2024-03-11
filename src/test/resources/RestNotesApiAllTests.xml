@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="NotesApiTestSuite">
-	<test name="NotesApiAllTests">
+<suite name="NotesApiTestSuite" parallel="tests">
+    <test name="NotesApiAllTests" parallel="methods" thread-count="5">
 		<packages>
 			<package name="rest.notesapi.tests.*">
 			</package>
