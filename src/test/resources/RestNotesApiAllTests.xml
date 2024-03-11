@@ -1,5 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="NotesApiTestSuite" parallel="tests">
+	<listeners>
+		<listener class-name="rest.notesapi.listeners.ExtentReportListener"></listener>
+	</listeners>
     <test name="NotesApiAllTests" parallel="methods" thread-count="5">
 		<packages>
 			<package name="rest.notesapi.tests.*">
