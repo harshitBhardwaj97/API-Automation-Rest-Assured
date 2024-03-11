@@ -16,7 +16,7 @@ import rest.notesapi.responses.common.CommonResponse;
 public class NotesApiCommonTests {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotesApiCommonTests.class);
-	private final String SUCCESS_HEALTH_MESSAGE = "Notes API is Running";
+	private final String SUCCESS_HEALTH_MESSAGE = "Notes API is Running."; // Intentionally done to break the tests
 
 	@BeforeTest
 	public void beforeNotesApiCommonTestsBlock() {
