@@ -29,3 +29,22 @@ jobs:
 
       - name: Run Tests
         run: mvn test
+
+      - name: Notify about successful build and test step
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ success() }}
+        with:
+          severity: info
+          color: "#22BB33"
+          text: Build and Test step for API Automation Framework is successful :), after latest commit by ${{ github.event.head_commit.author.username }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify about unsuccessful build and test step
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ failure() }}
+        with:
+          severity: error
+          text: Build for API Automation Framework Failed :<
+          color: "#BB2124"
+          details: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.event.head_commit.author.username }} broke the build :(
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
