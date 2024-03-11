@@ -14,9 +14,9 @@ public class Utils {
 		return NOTE_CATEGORIES[index];
 	}
 
-	public static String generateRandomHexId() {
+	public static String generateRandomHexId(int length) {
 		UUID uuid = UUID.randomUUID();
-		String hexId = uuid.toString().replace("-", "");
+		String hexId = uuid.toString().replace("-", "").substring(0, length);
 		return hexId;
 	}
 

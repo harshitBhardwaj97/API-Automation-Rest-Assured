@@ -75,7 +75,9 @@ public class UserResponse {
 				.post(NotesApiEndpoints.loginUser).then().extract().response();
 
 		String token = response.path("data.token");
+		String userId = response.path("data.id");
 		userPayloadOrInfo.put("token", token);
+		userPayloadOrInfo.put("user_id", userId);
 		return new UserResponseAndInfo(response, userPayloadOrInfo);
 	}
 
